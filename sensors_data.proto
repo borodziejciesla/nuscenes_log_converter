@@ -1,0 +1,174 @@
+syntax = "proto2";
+
+package sensors_data;
+
+// Host Data
+message HostData {
+  required float time_stamp = 1;
+
+  required float x = 2;
+  optional float v_x = 3;
+  required float y = 4;
+  optional float v_y = 5;
+  required float z = 6;
+  optional float v_z = 7;
+
+  required float yaw = 8;
+  optional float yaw_rate = 9;
+  required float pitch = 10;
+  optional float pitch_rate = 11;
+  required float roll = 12;
+  optional float roll_rate = 13;
+}
+
+message HostLogData {
+  repeated HostData scan_data = 1;
+}
+
+// General
+message SensorOrigin {
+  required float x = 1;
+  required float y = 2;
+  required float z = 3;
+
+  required float yaw = 4;
+  required float pitch = 5;
+  required float roll = 6;
+}
+
+message SensorOriginStd {
+  required float x_std = 1;
+  required float y_std = 2;
+  required float z_std = 3;
+
+  required float yaw_std = 4;
+  required float pitch_std = 5;
+  required float roll_std = 6;
+}
+
+// Lidar 
+message LidarDetecion {
+  required int32 id = 1;
+
+  required float x = 2;
+  optional float x_std = 3;
+  required float y = 4;
+  optional float y_std = 5;
+  required float z = 6;
+  optional float z_std = 7;
+
+  required float range = 8;
+  optional float range_std = 9;
+  required float azimuth = 10;
+  optional float azimuth_std = 11;
+  required float elevation = 12;
+  optional float elevation_std = 13;
+
+  enum LidarClassification {
+    LIDAR_CLASS_GROUND = 0;
+    LIDAR_CLASS_OBSTACLE = 1;
+    LIDAR_CLASS_MOVING = 2;
+    LIDAR_CLASS_UNKNOWN = 3;
+  }
+  required LidarClassification classification = 14 [default = LIDAR_CLASS_UNKNOWN];
+}
+
+message LidarScanData {
+  required double time_stamp = 1;
+  required SensorOrigin sensor_origin = 2;
+  optional SensorOriginStd sensor_origin_std = 3;
+  // Detections
+  repeated LidarDetecion detections = 4;
+}
+
+message LidarLogData {
+  repeated LidarScanData scan_data = 1;
+}
+
+// Radar
+message RadarDetection {
+  required int32 id = 1;
+
+  required float x = 2;
+  optional float x_std = 3;
+  required float y = 4;
+  optional float y_std = 5;
+  required float z = 6;
+  optional float z_std = 7;
+
+  required float range = 8;
+  optional float range_std = 9;
+  required float azimuth = 10;
+  optional float azimuth_std = 11;
+  required float elevation = 12;
+  optional float elevation_std = 13;
+
+  required float range_rate = 14;
+  optional float range_rate_std = 15;
+
+  enum RadarClassification {
+    RADAR_CASS_STATIC = 0;
+    RADAR_CASS_DYNAMIC = 1;
+    RADAR_CASS_UNKNOWN = 2;
+  }
+  required RadarClassification classification = 16 [default = RADAR_CASS_UNKNOWN];
+}
+
+message RadarScanData {
+  required double time_stamp = 1;
+  required SensorOrigin sensor_origin = 2;
+  optional SensorOriginStd sensor_origin_std = 3;
+  // Detections
+  repeated RadarDetection detections = 4;
+}
+
+message RadarLogData {
+  repeated RadarScanData scan_data = 1;
+}
+
+// Dynamic objects
+message Object {
+  required int32 id = 1;
+
+  required float x = 2;
+  optional float x_std = 3;
+  required float y = 4;
+  optional float y_std = 5;
+  required float vx = 6;
+  optional float vx_std = 7;
+  required float vy = 8;
+  optional float vy_std = 9;
+
+  required float width = 10;
+  optional float width_std = 11;
+  required float length = 12;
+  optional float length_std = 13;
+
+  enum MovementClassification {
+    OBJECT_MOVEMENT_CLASS_STATIC = 0;
+    OBJECT_MOVEMENT_CLASS_DYNAMIC = 1;
+    OBJECT_MOVEMENT_CLASS_UNKNOWN = 2;
+  }
+  required MovementClassification movement_classification = 14 [default = OBJECT_MOVEMENT_CLASS_UNKNOWN];
+
+  enum ObjectClassification {
+    OBJECT_CLASS_UNKNOWN = 0;
+    OBJECT_CLASS_CAR = 1;
+    OBJECT_CLASS_TRUCK = 2;
+    OBJECT_CLASS_PEDESTRIAN = 3;
+    OBJECT_CLASS_BIKE = 4;
+  }
+  required ObjectClassification object_class = 15 [default = OBJECT_CLASS_UNKNOWN];
+}
+
+message ObjectsScanData {
+  required double time_stamp = 1;
+  required SensorOrigin sensor_origin = 2;
+  optional SensorOriginStd sensor_origin_std = 3;
+  // Detections
+  repeated Object detections = 4;
+}
+
+message ObjectsLogData {
+  repeated ObjectsScanData scan_data = 1;
+}
