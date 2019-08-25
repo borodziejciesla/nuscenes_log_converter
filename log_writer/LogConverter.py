@@ -1,6 +1,6 @@
 import os
-import scan_readers
-import writers
+from log_writer import scan_readers
+from log_writer import writers
 from nuscenes.nuscenes import NuScenes
 
 class LogConverter:
