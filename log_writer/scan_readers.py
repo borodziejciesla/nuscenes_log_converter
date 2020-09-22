@@ -2,6 +2,8 @@ import abc
 from nuscenes.utils.data_classes import RadarPointCloud, LidarPointCloud
 from dataclasses import dataclass
 from math import sqrt, atan2, hypot
+from pyquaternion import Quaternion
+from scipy.spatial.transform import Rotation
 
 @dataclass()
 class Origin:
@@ -127,9 +129,7 @@ class BaseSensorScanReader:
         y = calibrated_sensor['translation'][1]
         z = calibrated_sensor['translation'][2]
 
-        yaw = calibrated_sensor['rotation'][2]
-        pitch = calibrated_sensor['rotation'][1]
-        roll = calibrated_sensor['rotation'][0]
+        yaw, pitch, roll = Quaternion2YPR(calibrated_sensor['rotation'])
 
         return Origin(x, y, z, yaw, pitch, roll)
 
@@ -236,11 +236,9 @@ class VisionScanReader(BaseSensorScanReader):
         v_z = 0
         v_z_std = 0
 
-        yaw = object_raw.orientation[0]
+        yaw, pitch, roll = Quaternion2YPR(object_raw.orientation)
         yaw_std = 0
-        pitch = object_raw.orientation[1]
         pitch_std = 0
-        roll = object_raw.orientation[2]
         roll_std = 0
 
         yaw_rate = 0
@@ -274,8 +272,11 @@ class HostDataReader:
         y = raw_ego_data['translation'][1]
         z = raw_ego_data['translation'][2]
 
-        yaw = raw_ego_data['rotation'][2]
-        pitch = raw_ego_data['rotation'][1]
-        roll = raw_ego_data['rotation'][0]
+        yaw, pitch, roll = Quaternion2YPR(raw_ego_data['rotation'])
 
         return HostData(time_stamp, x, 0.0, y, 0.0, z, 0.0, yaw, 0.0, pitch, 0.0, roll, 0.0)
+
+def Quaternion2YPR(q):
+    rot = Rotation.from_quat([q[1], q[2], q[3], q[0]])
+    euler = rot.as_euler('xyz', degrees=False)
+    return euler[2], euler[1], euler[0]

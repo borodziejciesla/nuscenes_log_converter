@@ -1,10 +1,11 @@
 from log_reader.log_reader import LogReader
 import numpy as np
 from log_reader.ploters import Ploter
+import matplotlib.pyplot as plt
 
 # Radar Data
-reader = LogReader("D:\\GIT\\SLAM\\data_set\\scene-0061_RADAR_BACK_LEFT.rad")
-ploter = Ploter(['D:\\GIT\\SLAM\\data_set\\scene-0061_RADAR_BACK_LEFT.rad'])
+reader = LogReader("/home/maciek/Downloads/output/scene-0061_RADAR_FRONT.rad")
+ploter = Ploter(['/home/maciek/Downloads/output/scene-0061_RADAR_FRONT.rad'])
 
 timestamps = []
 
@@ -28,16 +29,35 @@ if reader.IsFileOpen():
 reader.CloseFile()
 
 # Host Data
-reader = LogReader("D:\\GIT\\SLAM\\data_set\\scene-0103_HOST_DATA.host")
+reader = LogReader("/home/maciek/Downloads/output/scene-0103_HOST_DATA.host")
 
 timestamps = []
 
 if reader.IsFileOpen():
     scans_number = reader.GetScansNumber()
+
+    x = np.zeros((scans_number, 1))
+    y = np.zeros((scans_number, 1))
+    z = np.zeros((scans_number, 1))
+    yaw = np.zeros((scans_number, 1))
+    pitch = np.zeros((scans_number, 1))
+    roll = np.zeros((scans_number, 1))
+
     for index in range(0, scans_number):
         scan_data = reader.GetScanByIndex(index)
+        x[index] = scan_data.x
+        y[index] = scan_data.y
+        z[index] = scan_data.z
+        yaw[index] = scan_data.yaw
+        pitch[index] = scan_data.pitch
+        roll[index] = scan_data.roll
         print("\tts = {0:.2f}".format(scan_data.time_stamp))
         timestamps.append(scan_data.time_stamp)
+
+    plt.plot(pitch)
+    #plt.axis('equal')
+    plt.grid(True)
+    plt.show()
 
     print("Get By Timestamp")
     scan_data = reader.GetScanByTime(1533151621041512)

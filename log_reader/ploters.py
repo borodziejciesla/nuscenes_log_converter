@@ -4,6 +4,7 @@ from log_reader.log_reader import LogReader
 import os
 import numpy as np
 import time
+import scipy.linalg
 
 class Ploter:
     def __init__(self, detections_logs_list=[], objects_log_list=[], host_data_log=''):
@@ -25,10 +26,6 @@ class Ploter:
             self.__host_data_reader = LogReader(self.__host_data_log)
 
     def PlotDetections(self, scan_data):
-        x = []
-        y = []
-        z = []
-
         yaw_rad = np.deg2rad(scan_data.sensor_origin.yaw)
         pitch_rad = np.deg2rad(scan_data.sensor_origin.pitch)
         roll_rad = np.deg2rad(scan_data.sensor_origin.roll)
@@ -42,21 +39,56 @@ class Ploter:
         Rz = np.array([[cy, -sy, 0], [sy, cy, 0], [0, 0, 1]])
         origin_offset = np.array([scan_data.sensor_origin.x,  scan_data.sensor_origin.y, scan_data.sensor_origin.z])
 
+        detections_number = len(scan_data.detections)
+        
+        distance = np.zeros((detections_number, 1))
+        azimuth = np.zeros((detections_number, 1))
+        range_rate = np.zeros((detections_number, 1))
+
+        x = np.zeros((detections_number, 1))
+        y = np.zeros((detections_number, 1))
+        z = np.zeros((detections_number, 1))
+
+        i = 0
+
         for detection in scan_data.detections:
             X = np.array([detection.x, detection.y, detection.z])
             x_rot = Rx @ Ry @ Rz @ X + origin_offset
-            x.append(x_rot[0])
-            y.append(x_rot[1])
-            z.append(x_rot[2])
+            x[i] = x_rot[0]
+            y[i] = x_rot[1]
+            z[i] = x_rot[2]
+
+            distance[i] = detection.range
+            azimuth[i] = detection.azimuth
+            range_rate[i] = detection.range_rate
+
+            i += 1
+
         plt.plot(x, y, 'r.')
         plt.axis('equal')
         plt.grid(True)
         plt.show()
-        #time.sleep(0.2)
-        #plt.close()
+        time.sleep(0.2)
+        plt.close()
 
     def PlotObject(self, scan_data):
         pass
 
     def PlotHostData(self, scan_data):
         pass
+
+
+def FindVelocity(range_rate, azimuth):
+    l = len(range_rate)
+
+    H = np.zeros((l, 2))
+    Y = np.zeros((l, 1))
+
+    for idx in range(l):
+        H[idx, 0] = np.cos(azimuth[idx])
+        H[idx, 1] = np.sin(azimuth[idx])
+
+        Y[idx] = -range_rate[idx]
+
+    v = scipy.linalg.pinv(H.transpose() @ H) @ H.transpose() @ Y
+    return v
