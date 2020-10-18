@@ -2,6 +2,8 @@ import sys
 sys.path.append('d:\\GIT\\SLAM\\nuscenes_converter')
 import os
 import numpy as np
+
+sys.path.insert(1, '/home/maciek/Documents/git/ros_tutorial/mht_ws/src/log_converter/scripts/nuscenes_log_converter')
 import sensors_data_pb2
 
 class LogReader:

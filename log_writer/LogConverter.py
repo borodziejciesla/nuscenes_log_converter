@@ -1,6 +1,12 @@
 import os
-from log_writer import scan_readers
-from log_writer import writers
+import sys
+
+sys.path.insert(1, '/home/maciek/Documents/git/ros_tutorial/mht_ws/src/log_converter/scripts/nuscenes_log_converter/log_writer')
+import scan_readers
+import writers
+sys.path.insert(1, '/home/maciek/Documents/git/ros_tutorial/mht_ws/src/log_converter/scripts/nuscenes_log_converter')
+import sensors_data_pb2
+
 from nuscenes.nuscenes import NuScenes
 
 class LogConverter:

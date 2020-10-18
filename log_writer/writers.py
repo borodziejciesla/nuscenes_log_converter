@@ -1,4 +1,7 @@
+import sys
 import abc
+
+sys.path.insert(1, '/home/maciek/Documents/git/ros_tutorial/mht_ws/src/log_converter/scripts/nuscenes_log_converter')
 import sensors_data_pb2
 import sys
 

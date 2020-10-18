@@ -1,6 +1,8 @@
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
-from log_reader.log_reader import LogReader
+import sys
+sys.path.insert(1, '/home/maciek/Documents/git/ros_tutorial/mht_ws/src/log_converter/scripts/nuscenes_log_converter/log_reader')
+import log_reader
 import os
 import numpy as np
 import time
@@ -16,14 +18,14 @@ class Ploter:
         # Open Readers
         self.__detections_readers = []
         for detections_log in self.__detections_logs_list:
-            self.__detections_readers.append(LogReader(detections_log))
+            self.__detections_readers.append(log_reader.LogReader(detections_log))
         
         self.__objects_readers = []
         for objects_log in self.__objects_log_list:
-            self.__objects_readers.append(LogReader(objects_log))
+            self.__objects_readers.append(log_reader.LogReader(objects_log))
         
         if self.__host_data_log:
-            self.__host_data_reader = LogReader(self.__host_data_log)
+            self.__host_data_reader = log_reader.LogReader(self.__host_data_log)
 
     def PlotDetections(self, scan_data):
         yaw_rad = np.deg2rad(scan_data.sensor_origin.yaw)

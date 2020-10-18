@@ -130,7 +130,7 @@ class BaseSensorScanReader:
         z = calibrated_sensor['translation'][2]
 
         yaw, pitch, roll = Quaternion2YPR(calibrated_sensor['rotation'])
-
+        
         return Origin(x, y, z, yaw, pitch, roll)
 
 

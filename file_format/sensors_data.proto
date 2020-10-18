@@ -4,21 +4,21 @@ package sensors_data;
 
 // Host Data
 message HostData {
-  required float time_stamp = 1;
+  required double time_stamp = 1;
 
-  required float x = 2;
-  optional float v_x = 3;
-  required float y = 4;
-  optional float v_y = 5;
-  required float z = 6;
-  optional float v_z = 7;
+  required double x = 2;
+  optional double v_x = 3;
+  required double y = 4;
+  optional double v_y = 5;
+  required double z = 6;
+  optional double v_z = 7;
 
-  required float yaw = 8;
-  optional float yaw_rate = 9;
-  required float pitch = 10;
-  optional float pitch_rate = 11;
-  required float roll = 12;
-  optional float roll_rate = 13;
+  required double yaw = 8;
+  optional double yaw_rate = 9;
+  required double pitch = 10;
+  optional double pitch_rate = 11;
+  required double roll = 12;
+  optional double roll_rate = 13;
 }
 
 message HostLogData {
@@ -27,42 +27,42 @@ message HostLogData {
 
 // General
 message SensorOrigin {
-  required float x = 1;
-  required float y = 2;
-  required float z = 3;
+  required double x = 1;
+  required double y = 2;
+  required double z = 3;
 
-  required float yaw = 4;
-  required float pitch = 5;
-  required float roll = 6;
+  required double yaw = 4;
+  required double pitch = 5;
+  required double roll = 6;
 }
 
 message SensorOriginStd {
-  required float x_std = 1;
-  required float y_std = 2;
-  required float z_std = 3;
+  required double x_std = 1;
+  required double y_std = 2;
+  required double z_std = 3;
 
-  required float yaw_std = 4;
-  required float pitch_std = 5;
-  required float roll_std = 6;
+  required double yaw_std = 4;
+  required double pitch_std = 5;
+  required double roll_std = 6;
 }
 
 // Lidar 
 message LidarDetecion {
   required int32 id = 1;
 
-  required float x = 2;
-  optional float x_std = 3;
-  required float y = 4;
-  optional float y_std = 5;
-  required float z = 6;
-  optional float z_std = 7;
+  required double x = 2;
+  optional double x_std = 3;
+  required double y = 4;
+  optional double y_std = 5;
+  required double z = 6;
+  optional double z_std = 7;
 
-  required float range = 8;
-  optional float range_std = 9;
-  required float azimuth = 10;
-  optional float azimuth_std = 11;
-  required float elevation = 12;
-  optional float elevation_std = 13;
+  required double range = 8;
+  optional double range_std = 9;
+  required double azimuth = 10;
+  optional double azimuth_std = 11;
+  required double elevation = 12;
+  optional double elevation_std = 13;
 
   enum LidarClassification {
     LIDAR_CLASS_GROUND = 0;
@@ -89,22 +89,22 @@ message LidarLogData {
 message RadarDetection {
   required int32 id = 1;
 
-  required float x = 2;
-  optional float x_std = 3;
-  required float y = 4;
-  optional float y_std = 5;
-  required float z = 6;
-  optional float z_std = 7;
+  required double x = 2;
+  optional double x_std = 3;
+  required double y = 4;
+  optional double y_std = 5;
+  required double z = 6;
+  optional double z_std = 7;
 
-  required float range = 8;
-  optional float range_std = 9;
-  required float azimuth = 10;
-  optional float azimuth_std = 11;
-  required float elevation = 12;
-  optional float elevation_std = 13;
+  required double range = 8;
+  optional double range_std = 9;
+  required double azimuth = 10;
+  optional double azimuth_std = 11;
+  required double elevation = 12;
+  optional double elevation_std = 13;
 
-  required float range_rate = 14;
-  optional float range_rate_std = 15;
+  required double range_rate = 14;
+  optional double range_rate_std = 15;
 
   enum RadarClassification {
     RADAR_CASS_STATIC = 0;
@@ -130,19 +130,19 @@ message RadarLogData {
 message Object {
   required int32 id = 1;
 
-  required float x = 2;
-  optional float x_std = 3;
-  required float y = 4;
-  optional float y_std = 5;
-  required float vx = 6;
-  optional float vx_std = 7;
-  required float vy = 8;
-  optional float vy_std = 9;
+  required double x = 2;
+  optional double x_std = 3;
+  required double y = 4;
+  optional double y_std = 5;
+  required double vx = 6;
+  optional double vx_std = 7;
+  required double vy = 8;
+  optional double vy_std = 9;
 
-  required float width = 10;
-  optional float width_std = 11;
-  required float length = 12;
-  optional float length_std = 13;
+  required double width = 10;
+  optional double width_std = 11;
+  required double length = 12;
+  optional double length_std = 13;
 
   enum MovementClassification {
     OBJECT_MOVEMENT_CLASS_STATIC = 0;
